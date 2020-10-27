@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion config['compile-sdk']
+    buildToolsVersion config['build-tools']
+
+    defaultConfig {
+        minSdkVersion config['min-sdk']
+        targetSdkVersion config['target-sdk']
+        versionCode 1
+        versionName version
+    }
+}
+
+dependencies {
+
+    deps.with {
+        api it['x-annotations']
+        api it['commonmark']
+
+        // @since 4.1.0 to allow PrecomputedTextSetterCompat
+        // note that this dependency must be added on a client side explicitly
+        compileOnly it['x-core']
+        compileOnly it['x-appcompat']
+    }
+
+    testImplementation project(':markwon-test-span')
+    testImplementation deps['commons-io']
+
+    deps['test'].with {
+        testImplementation it['junit']
+        testImplementation it['robolectric']
+        testImplementation it['mockito']
+    }
+}
+
+registerArtifact(this)
